@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 const randomStringSource = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_+"
@@ -73,7 +74,28 @@ func (t *Tools) UploadFiles(r *http.Request, uploadDir string, rename ...bool) (
 					return nil, err
 				}
 
-				// TODO: check to see if the file type is permitted
+				// check to see if the file type is permitted
+				allowed := false
+				fileType := http.DetectContentType(buff)
+
+				if len(t.AllowedFileTypes) > 0 {
+					for _, x := range t.AllowedFileTypes {
+						if strings.EqualFold(fileType, x) {
+							allowed = true
+						}
+					}
+				} else {
+					allowed = true
+				}
+
+				if !allowed {
+					return nil, errors.New("the uploaded file type is not permitted")
+				}
+
+				_, err = infile.Seek(0, 0)
+				if err != nil {
+					return nil, err
+				}
 
 				if renameFile {
 					uploadedFile.NewFileName = fmt.Sprintf("%s%s", t.RandomString(25), filepath.Ext(fh.Filename))
