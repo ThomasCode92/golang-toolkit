@@ -3,7 +3,11 @@ package toolkit
 import (
 	"crypto/rand"
 	"errors"
+	"fmt"
+	"io"
 	"net/http"
+	"os"
+	"path/filepath"
 )
 
 const randomStringSource = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_+"
@@ -11,7 +15,8 @@ const randomStringSource = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
 // Tools is the type used to instantiate this module. Any variable of this type whill have access
 // to all the methods with the reciever *Tools.
 type Tools struct {
-	MaxFileSize int
+	MaxFileSize      int
+	AllowedFileTypes []string
 }
 
 // UploadedFile is a struct used to save information about an uploaded file.
@@ -53,8 +58,49 @@ func (t *Tools) UploadFiles(r *http.Request, uploadDir string, rename ...bool) (
 
 	for _, fHeaders := range r.MultipartForm.File {
 		for _, fh := range fHeaders {
-			uploadedFiles, err = func(uploadedFiles []*UploadedFile) ([]*UploadFile, error) {
+			uploadedFiles, err = func(uploadedFiles []*UploadedFile) ([]*UploadedFile, error) {
+				var uploadedFile UploadedFile
+
+				infile, err := fh.Open()
+				if err != nil {
+					return nil, err
+				}
+				defer infile.Close()
+
+				buff := make([]byte, 512)
+				_, err = infile.Read(buff)
+				if err != nil {
+					return nil, err
+				}
+
+				// TODO: check to see if the file type is permitted
+
+				if renameFile {
+					uploadedFile.NewFileName = fmt.Sprintf("%s%s", t.RandomString(25), filepath.Ext(fh.Filename))
+				} else {
+					uploadedFile.NewFileName = fh.Filename
+				}
+
+				var outfile *os.File
+				defer outfile.Close()
+
+				if outfile, err = os.Create(filepath.Join(uploadDir, uploadedFile.NewFileName)); err != nil {
+					return nil, err
+				} else {
+					fileSize, err := io.Copy(outfile, infile)
+					if err != nil {
+						return nil, err
+					}
+					uploadedFile.FileSize = fileSize
+				}
+
+				uploadedFiles = append(uploadedFiles, &uploadedFile)
+
+				return uploadedFiles, nil
 			}(uploadedFiles)
+			if err != nil {
+				return uploadedFiles, err
+			}
 		}
 	}
 
