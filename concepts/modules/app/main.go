@@ -11,4 +11,7 @@ func main() {
 
 	s := tools.RandomString(10)
 	fmt.Println("Random string:", s)
+
+	tools.CreateDirIfNotExist("./testdir")
+	tools.CreateDirIfNotExist("./tmp/subdir")
 }
