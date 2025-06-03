@@ -40,6 +40,18 @@ func (t *Tools) RandomString(n int) string {
 	return string(s)
 }
 
+// CreateDirIfNotExist creates a directory, and all necessary parents, if it does not exist.
+func (t *Tools) CreateDirIfNotExist(path string) error {
+	const mode = 0755 // Default directory permissions
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		err := os.MkdirAll(path, mode)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // UploadFile is just a convenience method that calls UploadFiles,
 // but expects only one file to be in the upload.
 func (t *Tools) UploadFile(r *http.Request, uploadDir string, rename ...bool) (*UploadedFile, error) {
