@@ -14,4 +14,12 @@ func main() {
 
 	tools.CreateDirIfNotExist("./testdir")
 	tools.CreateDirIfNotExist("./tmp/subdir")
+
+	toSlug := "now is the time 123"
+	slugified, err := tools.Slugify(toSlug)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("Slugified string:", slugified)
 }
