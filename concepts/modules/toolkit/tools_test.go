@@ -21,6 +21,20 @@ func TestTools_RandomString(t *testing.T) {
 	}
 }
 
+func TestTools_CreateDirIfNotExist(t *testing.T) {
+	var testTools Tools
+
+	err := testTools.CreateDirIfNotExist("./testdata/myDir")
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = testTools.CreateDirIfNotExist("./testdata/myDir")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
 func TestTools_UploadFile(t *testing.T) {
 	// set up a pipe to avoid buffering
 	pr, pw := io.Pipe()
