@@ -1,7 +1,7 @@
 # 📦 Building a Go Module
 
-A guide to developing a **reusable, well-tested module** in Go for _web-related
-functionality_. Designed for clarity, modularity, and ease of maintenance.
+A **reusable, well-tested module** in Go for _web-related functionality_.
+Designed for clarity, modularity, and ease of maintenance.
 
 ---
 
@@ -35,9 +35,10 @@ manage changes and updates in a consistent manner.
 
 ```bash
 modules/
-├── app/        # Demo app for the 'core' functionality
-├── app-upload/ # Demo app for file upload functionality
-└── toolkit/    # The web development toolkit itself
+├── app/            # Demo app for the 'core' functionality
+├── app-download/   # Demo app for file download functionality
+├── app-upload/     # Demo app for file upload functionality
+└── toolkit/        # The web development toolkit itself
 ```
 
 ### 🚀 Running the Example Applications
@@ -45,6 +46,6 @@ modules/
 Each `app`-folder is a Go project. To start one, run:
 
 ```bash
-cd app && go run .
-cd app-upload && go run .
+cd app && go run .        # "app" is the core functionality demo
+cd app-upload && go run . # "app-upload" is one of the example applications
 ```
