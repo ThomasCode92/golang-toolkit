@@ -274,7 +274,7 @@ func TestTools_ReadJSON(t *testing.T) {
 		// create a recorder
 		rr := httptest.NewRecorder()
 
-		err = testTools.ReadJson(rr, req, &decodedJSON)
+		err = testTools.ReadJSON(rr, req, &decodedJSON)
 
 		if e.errorExpected && err == nil {
 			t.Errorf("%s: error expected, but none received", e.name)

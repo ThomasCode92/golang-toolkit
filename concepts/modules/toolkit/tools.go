@@ -206,7 +206,7 @@ type JSONResponse struct {
 }
 
 // ReadJSON tries to read the body of a request and converts it from JSON to a variable.
-func (t *Tools) ReadJson(w http.ResponseWriter, r *http.Request, data interface{}) error {
+func (t *Tools) ReadJSON(w http.ResponseWriter, r *http.Request, data interface{}) error {
 	maxBytes := 1024 * 1024 // 1 MB
 	if t.MaxJSONSize > 0 {
 		maxBytes = t.MaxJSONSize
