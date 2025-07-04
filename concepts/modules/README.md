@@ -37,6 +37,7 @@ manage changes and updates in a consistent manner.
 modules/
 ├── app/            # Demo app for the 'core' functionality
 ├── app-download/   # Demo app for file download functionality
+├── app-json/       # Demo app for handling json functionality
 ├── app-upload/     # Demo app for file upload functionality
 └── toolkit/        # The web development toolkit itself
 ```
