@@ -15,17 +15,20 @@ golang-toolkit/
 
 ## 🚀 Running Projects
 
-Each folder in `concepts/` or `projects/` is a standalone Go module. **Use the
-helper script**:
+Each folder in `concepts/` or `projects/` is a standalone Go module.
+
+**Use the helper script**:
 
 ```bash
-./scripts/run.sh <path-to-project>
+  ./scripts/run.sh <path-to-project>
+
+  # for example, to run the 'app-json' project
+  ./scripts/run.sh concepts/modules/app-json
 ```
 
 ### 🛠️ Prerequisites
 
 - [Go 1.24+](https://go.dev/dl/)
-- [Git](https://git-scm.com/)
 - [Bash (for scripts)](https://www.gnu.org/software/bash/)
 
 ## 📘 Learning Topics

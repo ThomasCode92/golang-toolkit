@@ -9,8 +9,7 @@ Designed for clarity, modularity, and ease of maintenance.
 
 Modules in Go provide a way to organize and separate code, making it easier to
 maintain and understand. They allow developers to share code across different
-projects or with the wider community. By using semantic versioning, modules help
-manage changes and updates in a consistent manner.
+projects or with the wider community.
 
 ## ❓ About this Project
 
@@ -24,9 +23,9 @@ manage changes and updates in a consistent manner.
 | ----------------------------------------- | ------------------------------------------ |
 | 🏗️ Go module for web development tasks    | 📄 JSON read/write operations              |
 | ✅ Implementing tests for each feature    | ⚠️ Human-readable JSON error responses     |
-| 🔢 Applying semantic versioning           | 📤 File upload handling                    |
-| 🧰 Utilizing Go's workspace functionality | 📥 Static file downloads                   |
-| 📚 Stick to the standard library          | 🎲 Random number generation                |
+| 🧰 Utilizing Go's workspace functionality | 📤 File upload handling                    |
+| 📚 Stick to the standard library          | 📥 Static file downloads                   |
+|                                           | 🎲 Random number generation                |
 |                                           | 🌐 Posting JSON payloads to remote servers |
 |                                           | 📁 Directory creation                      |
 |                                           | 🔗 Slug generation from text               |
