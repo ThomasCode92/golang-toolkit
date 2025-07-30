@@ -25,4 +25,9 @@ func main() {
 	wg.Add(1) // Add one more for the second print
 
 	printSomething("This is the second thing to be printed.", &wg)
+
+	fmt.Println("---------- Challenge Function ----------")
+
+	// run the challenge function
+	challenge()
 }
