@@ -41,7 +41,7 @@ func (p *Producer) Close() error {
 // will take a different length of time to produce (some pizzas are harder than others).
 func makePizza(pizzaNumber int) *PizzaOrder {
 	pizzaNumber++
-	if pizzaNumber < NumberOfPizzas {
+	if pizzaNumber <= NumberOfPizzas {
 		delay := rand.Intn(5) + 1
 		fmt.Printf("Received order #%d\n", pizzaNumber)
 
@@ -92,19 +92,19 @@ func pizzeria(p *Producer) {
 	// keep track of which pizza we are making
 	i := 0
 
-	// run forever or until we receive a quit notification
-	// try to make pizzas
+	// this loop will continue to execute, trying to make pizzas,
+	// until the quit channel receives something.
 	for {
-		// try to make a pizza
 		currentPizza := makePizza(i)
 
 		// decision
 		if currentPizza != nil {
 			i = currentPizza.pizzaNumber
 			select {
-			// we tried to make a pizza (we send something to the data channel)
+			// we tried to make a pizza (we send something to the data channel -- a chan PizzaOrder)
 			case p.data <- *currentPizza:
 
+			// we want to quit, so send pizzMaker.quit to the quitChan (a chan error)
 			case quitChan := <-p.quit:
 				// close channels
 				close(p.data)
@@ -133,6 +133,23 @@ func main() {
 	go pizzeria(pizzaJob)
 
 	// create and run the consumer
+	for i := range pizzaJob.data {
+		if i.pizzaNumber <= NumberOfPizzas {
+			if i.success {
+				color.Green(i.message)
+				color.Green("Order #%d is out for delivery!", i.pizzaNumber)
+			} else {
+				color.Red(i.message)
+				color.Red("The customer is really mad!")
+			}
+		} else {
+			color.Cyan("Done making pizzas...")
+			err := pizzaJob.Close()
+			if err != nil {
+				color.Red("*** Error closing channel!", err)
+			}
+		}
+	}
 
 	// print out the ending message
 }
