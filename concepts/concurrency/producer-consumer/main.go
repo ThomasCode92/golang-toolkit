@@ -104,7 +104,7 @@ func pizzeria(p *Producer) {
 			// we tried to make a pizza (we send something to the data channel -- a chan PizzaOrder)
 			case p.data <- *currentPizza:
 
-			// we want to quit, so send pizzMaker.quit to the quitChan (a chan error)
+			// we want to quit, so send pizzaMaker.quit to the quitChan (a chan error)
 			case quitChan := <-p.quit:
 				// close channels
 				close(p.data)
@@ -152,4 +152,21 @@ func main() {
 	}
 
 	// print out the ending message
+	color.Cyan("-----------------")
+	color.Cyan("Done for the day.")
+
+	color.Cyan("We made %d pizzas, but failed to make %d, with %d attempts in total.", pizzasMade, pizzasFailed, pizzasTotal)
+
+	switch {
+	case pizzasFailed > 9:
+		color.Red("It was an awful day...")
+	case pizzasFailed >= 6:
+		color.Red("It was not a very good day...")
+	case pizzasFailed >= 4:
+		color.Yellow("It was an okay day....")
+	case pizzasFailed >= 2:
+		color.Yellow("It was a pretty good day!")
+	default:
+		color.Green("It was a great day!")
+	}
 }
