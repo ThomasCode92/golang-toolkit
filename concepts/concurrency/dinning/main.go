@@ -56,6 +56,10 @@ func main() {
 }
 
 func dine() {
+	eatTime = 0 * time.Second   // set to 0 to speed up the output
+	thinkTime = 0 * time.Second // set to 0 to speed up the output
+	sleepTime = 0 * time.Second // set to 0 to speed up the output
+
 	// wg is the WaitGroup that keeps track of how many philosophers are still at the table. When it reaches
 	// zero, everyone is finished eating and has left. We add 5 (the number of philosophers) to this wait group.
 	wg := &sync.WaitGroup{}
@@ -88,4 +92,40 @@ func dine() {
 // until everyone is seated at the table.
 func diningProblem(philosopher Philosopher, wg *sync.WaitGroup, forks map[int]*sync.Mutex, seated *sync.WaitGroup) {
 	defer wg.Done()
+
+	// seat the philosopher at the table
+	fmt.Printf("%s is seated at the table.\n", philosopher.name)
+	seated.Done()
+
+	seated.Wait()
+
+	// eat three times
+	for i := hunger; i > 0; i-- {
+		// get a lock on both forks, pick to lower numbered fork first
+		if philosopher.leftFork > philosopher.rightFork {
+			forks[philosopher.rightFork].Lock()
+			fmt.Printf("\t%s takes the right fork.\n", philosopher.name)
+			forks[philosopher.leftFork].Lock()
+			fmt.Printf("\t%s takas the left fork.\n", philosopher.name)
+		} else {
+			forks[philosopher.leftFork].Lock()
+			fmt.Printf("\t%s takas the left fork.\n", philosopher.name)
+			forks[philosopher.rightFork].Lock()
+			fmt.Printf("\t%s takes the right fork.\n", philosopher.name)
+		}
+
+		fmt.Printf("\t%s has both forks and is eating.\n", philosopher.name)
+		time.Sleep(eatTime)
+
+		fmt.Printf("\t%s has both forks and is thinking.\n", philosopher.name)
+		time.Sleep(thinkTime)
+
+		forks[philosopher.leftFork].Unlock()
+		forks[philosopher.rightFork].Unlock()
+
+		fmt.Printf("\t%s has finished eating and put down both forks.\n", philosopher.name)
+	}
+
+	fmt.Println(philosopher.name, "is satisfied.")
+	fmt.Println(philosopher.name, "left the table.")
 }
