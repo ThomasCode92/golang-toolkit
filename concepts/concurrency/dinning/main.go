@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 )
@@ -36,10 +37,12 @@ var philosophers = []Philosopher{
 
 // Define a few variables.
 var (
-	hunger    = 3               // how many times a philosopher eats
-	eatTime   = 1 * time.Second // how long it takes to eatTime
-	thinkTime = 3 * time.Second // how long a philosopher thinks
-	sleepTime = 1 * time.Second // how long to wait when printing things out
+	hunger        = 3               // how many times a philosopher eats
+	eatTime       = 1 * time.Second // how long it takes to eatTime
+	thinkTime     = 3 * time.Second // how long a philosopher thinks
+	sleepTime     = 1 * time.Second // how long to wait when printing things out
+	orderMutex    sync.Mutex        // a mutex for the slice orderFinished
+	orderFinished []string          // the order of which philosophers finish dining and leave
 )
 
 func main() {
@@ -48,11 +51,16 @@ func main() {
 	fmt.Println("---------------------------")
 	fmt.Println("The table is empty.")
 
+	time.Sleep(sleepTime)
+
 	// start the meal
 	dine()
 
 	// print out finished message
 	fmt.Println("The table is empty.")
+
+	time.Sleep(sleepTime)
+	fmt.Printf("Order finished: %s.\n", strings.Join(orderFinished, ", "))
 }
 
 func dine() {
@@ -128,4 +136,8 @@ func diningProblem(philosopher Philosopher, wg *sync.WaitGroup, forks map[int]*s
 
 	fmt.Println(philosopher.name, "is satisfied.")
 	fmt.Println(philosopher.name, "left the table.")
+
+	orderMutex.Lock()
+	orderFinished = append(orderFinished, philosopher.name)
+	orderMutex.Unlock()
 }
