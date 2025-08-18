@@ -28,6 +28,7 @@ func main() {
 
 	fmt.Println("Type something and press ENTER (enter Q to quit).")
 	fmt.Println("Run 'select' example by typing 's' and pressing ENTER.")
+	fmt.Println("Run 'buffered' example by typing 'b' and pressing ENTER.")
 
 	for {
 		fmt.Print("-> ")
@@ -43,6 +44,12 @@ func main() {
 		// run the example project to demonstrate the use of the select statement
 		if input == strings.ToLower("s") {
 			servers()
+			break // jump out of the loop
+		}
+
+		if input == strings.ToLower("b") {
+			buffers()
+			break // jump out of the loop
 		}
 
 		// send userInput to "ping" channel
