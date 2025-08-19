@@ -1,0 +1,34 @@
+services:
+  # start postgres, and ensure that data is stored to a named volume
+  postgres:
+    image: "postgres:17"
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sub-service
+    volumes:
+      - pg-data:/var/lib/postgresql/data/
+  # start redis, and ensure that data is stored to a named volume
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - redis-data:/data
+  #  start mailhog
+  mailhog:
+    image: "mailhog/mailhog:latest"
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    restart: always
+
+volumes:
+  pg-data:
+    name: pg-data
+  redis-data:
+    name: redis-data
