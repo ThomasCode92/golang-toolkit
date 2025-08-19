@@ -57,3 +57,19 @@ func (b *BarberShop) sendBarberHome(barber string) {
 	color.Cyan("%s is going home", barber)
 	b.BarbersDoneChan <- true
 }
+
+func (b *BarberShop) closeShopForDay() {
+	color.Cyan("Closing shop for the day.")
+
+	close(b.ClientsChan)
+	b.Open = false
+
+	for range b.NumberOfBarbers {
+		<-b.BarbersDoneChan
+	}
+
+	close(b.BarbersDoneChan)
+
+	color.Green("---------------------------------------------------------------------")
+	color.Green("The barbershop is now closed for the day, and everyone has gone home.")
+}
