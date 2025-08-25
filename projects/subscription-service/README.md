@@ -30,7 +30,13 @@ Follow these steps to set up and run the project:
    export REDIS_URL="localhost:6379"
    ```
 
-3. **Start the web server:**
+3. **Set up the database schema:**
+
+   ```bash
+   psql "host=localhost port=5432 user=postgres password=password dbname=sub-service" -f ./db.sql
+   ```
+
+4. **Start the web server:**
 
    ```bash
    go run ./cmd/web/*.go
