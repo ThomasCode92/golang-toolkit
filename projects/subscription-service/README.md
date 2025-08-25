@@ -33,7 +33,7 @@ Follow these steps to set up and run the project:
 3. **Start the web server:**
 
    ```bash
-   go run ./cmd/web/main.go
+   go run ./cmd/web/*.go
    ```
 
 ---
