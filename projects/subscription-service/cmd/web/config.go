@@ -3,8 +3,9 @@ package main
 import (
 	"database/sql"
 	"log"
-	"subscription-service/data"
 	"sync"
+
+	"subscription-service/data"
 
 	"github.com/alexedwards/scs/v2"
 )
@@ -16,4 +17,5 @@ type Config struct {
 	ErrorLog *log.Logger
 	Wait     *sync.WaitGroup
 	Models   data.Models
+	Mailer   Mail
 }
