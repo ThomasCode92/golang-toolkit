@@ -39,6 +39,14 @@ func (app *Config) PostLoginPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !valid {
+		msg := Message{
+			To:      email,
+			Subject: "Failed log in attempt",
+			Data:    "Invalid login attempt!",
+		}
+
+		app.sendMail(msg)
+
 		app.Session.Put(r.Context(), "error", "Invalid credentials")
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
