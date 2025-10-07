@@ -28,6 +28,10 @@ Follow these steps to set up and run the project:
    ```bash
    export DSN="host=localhost port=5432 user=postgres password=password dbname=sub-service"
    export REDIS_URL="localhost:6379"
+
+   # when using Nushell, use the following command instead:
+   load-env { "DSN": "host=localhost port=5432 user=postgres password=password dbname=sub-service", "REDIS_URL": "localhost:6379" }
+
    ```
 
 3. **Set up the database schema:**
@@ -42,4 +46,10 @@ Follow these steps to set up and run the project:
    go run ./cmd/web/*.go
    ```
 
----
+5. **Authenticate the dummy user:**
+
+   ```bash
+   # open the browser on http://localhost:8080/login
+   Username: admin@example.com
+   Password: verysecret
+   ```
