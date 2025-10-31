@@ -8,6 +8,7 @@ require (
 	github.com/alexedwards/scs/redisstore v0.0.0-20250417082927-ab20b3feb5e9 // indirect
 	github.com/alexedwards/scs/v2 v2.9.0 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
+	github.com/bwmarrin/go-alone v0.0.0-20190806015146-742bb55d1631
 	github.com/go-chi/chi/v5 v5.2.2 // indirect
 	github.com/gomodule/redigo v1.8.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
