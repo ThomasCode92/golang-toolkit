@@ -190,9 +190,25 @@ func (app *Config) SubscribeToPlan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// generate an invoice
+	// generate an invoice and email it
+	app.Wait.Add(1)
+	go func() {
+		defer app.Wait.Done()
 
-	// send an email with the invoice attached
+		invoice, err := app.getInvoice(user, plan)
+		if err != nil {
+			app.ErrorChan <- err
+		}
+
+		msg := Message{
+			To:       user.Email,
+			Subject:  "Your invoice",
+			Data:     invoice,
+			Template: "invoice-email",
+		}
+
+		app.sendMail(msg)
+	}()
 
 	// generate a manual
 
@@ -201,4 +217,12 @@ func (app *Config) SubscribeToPlan(w http.ResponseWriter, r *http.Request) {
 	// subscribe the user to an account
 
 	// redirect
+}
+
+// Generates an invoice for the user based on the plan they chose.
+// In a real application, this would be much more complex and involve
+// generating a PDF or other document.
+func (app *Config) getInvoice(_ data.User, plan *data.Plan) (string, error) {
+	app.InfoLog.Println("Generating invoice...")
+	return plan.PlanAmountFormatted, nil
 }
