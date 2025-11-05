@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -221,7 +220,7 @@ func (app *Config) SubscribeToPlan(w http.ResponseWriter, r *http.Request) {
 		defer app.Wait.Done()
 
 		pdf := app.generateManual(user, plan)
-		err := pdf.OutputFileAndClose(fmt.Sprintf("./temp/%d_manual.pdf", user.ID))
+		err := pdf.OutputFileAndClose(fmt.Sprintf("./tmp/%d_manual.pdf", user.ID))
 		if err != nil {
 			app.ErrorChan <- err
 			return
@@ -232,17 +231,32 @@ func (app *Config) SubscribeToPlan(w http.ResponseWriter, r *http.Request) {
 			Subject: "Your user manual",
 			Data:    "Your user manual is attached.",
 			AttachmentMap: map[string]string{
-				"Manual.pdf": fmt.Sprintf("./temp/%d_manual.pdf", user.ID),
+				"Manual.pdf": fmt.Sprintf("./tmp/%d_manual.pdf", user.ID),
 			},
 		}
 
 		app.sendMail(msg)
 
 		// test error handling
-		app.ErrorChan <- errors.New("some custom error")
+		// app.ErrorChan <- errors.New("some custom error")
 	}()
 
-	// subscribe the user to an account
+	// subscribe the user to a plan
+	err = app.Models.Plan.SubscribeUserToPlan(user, *plan)
+	if err != nil {
+		app.Session.Put(r.Context(), "error", "Error subscribing to plan.")
+		http.Redirect(w, r, "/members/plans", http.StatusSeeOther)
+		return
+	}
+
+	// update the user in the session
+	u, err := app.Models.User.GetOne(user.ID)
+	if err != nil {
+		app.Session.Put(r.Context(), "error", "Error getting user from database.")
+		http.Redirect(w, r, "/members/plans", http.StatusSeeOther)
+		return
+	}
+	app.Session.Put(r.Context(), "user", u)
 
 	// redirect
 	app.Session.Put(r.Context(), "flash", "Subscribed!")
