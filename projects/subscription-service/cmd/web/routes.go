@@ -24,29 +24,17 @@ func (app *Config) routes() http.Handler {
 	mux.Post("/register", app.PostRegisterPage)
 	mux.Get("/activate", app.ActivateAccount)
 
+	mux.Mount("/members", app.authRouter())
+
+	return mux
+}
+
+func (app *Config) authRouter() http.Handler {
+	mux := chi.NewRouter()
+	mux.Use(app.Auth)
+
 	mux.Get("/plans", app.ChooseSubscription)
 	mux.Get("/subscribe", app.SubscribeToPlan)
-
-	// route for testing email
-	mux.Get("/test-email", func(w http.ResponseWriter, r *http.Request) {
-		m := Mail{
-			Domain:      "localhost",
-			Host:        "localhost",
-			Port:        1025,
-			Encryption:  "none",
-			FromAddress: "no-reply@localhost.com",
-			FromName:    "info",
-			ErrChan:     make(chan error),
-		}
-
-		msg := Message{
-			To:      "me@here.com",
-			Subject: "Test email",
-			Data:    "This is a test email",
-		}
-
-		m.sendMail(msg, m.ErrChan)
-	})
 
 	return mux
 }
