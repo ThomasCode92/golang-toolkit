@@ -36,10 +36,12 @@ variables and data can be used in the appropriate sequence.
 
 ```
 concurrency/
+├── channels/           # an introduction to channels
 ├── dinning/            # an example of the dining philosophers problem
 ├── goroutine/          # an introduction to goroutines
 ├── mutex/              # an introduction to mutexes
 ├── producer-consumer/  # an example of the producer-consumer problem
+├── sleeping-barber/    # an example of the sleeping barber problem
 └── weekly-income/      # an example project, using goroutines and mutexes
 ```
 
@@ -54,3 +56,7 @@ cd weekly-income && go run .        # run the application
 cd weekly-income && go run -race .  # run, and check for race conditions
 cd weekly-income && go test -race . # run the tests, and check for race conditions
 ```
+
+**A more 'real-world' scenario:**<br />To see a more realistic example of
+concurrency in Go, check out the
+[subscription-service](/projects/subscription-service/README.md) project.
