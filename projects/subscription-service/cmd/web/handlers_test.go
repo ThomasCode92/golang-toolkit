@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -74,5 +75,30 @@ func TestConfig(t *testing.T) {
 				t.Errorf("%s failed: expected HTML to contain %s", e.name, e.expectedHTML)
 			}
 		}
+	}
+}
+
+func TestConfig_PostLoginPage(t *testing.T) {
+	pathToTemplates = "./templates/"
+
+	postedData := url.Values{
+		"email":    {"admin@example.com"},
+		"password": {"password123"},
+	}
+
+	rr := httptest.NewRecorder()
+	req := httptest.NewRequest("POST", "/login", strings.NewReader(postedData.Encode()))
+	ctx := getCtx(req)
+	req = req.WithContext(ctx)
+
+	handler := http.HandlerFunc(testApp.PostLoginPage)
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusSeeOther {
+		t.Error("wrong status code")
+	}
+
+	if !testApp.Session.Exists(ctx, "userID") {
+		t.Error("did not found userID in session")
 	}
 }
