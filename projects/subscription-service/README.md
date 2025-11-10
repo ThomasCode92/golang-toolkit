@@ -53,3 +53,9 @@ Follow these steps to set up and run the project:
    Username: admin@example.com
    Password: verysecret
    ```
+
+6. **Running the Tests:**
+
+   ```bash
+   go test -race -v .
+   ```
