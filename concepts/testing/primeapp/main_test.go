@@ -1,8 +1,27 @@
 package main
 
 import (
+	"io"
+	"os"
 	"testing"
 )
+
+func Test_prompt(t *testing.T) {
+	oldOut := os.Stdout  // save a copy of os.Stdout
+	r, w, _ := os.Pipe() // create a read and write pipe
+	os.Stdout = w        // set os.Stdout to the write pipe
+
+	prompt() // call the function that prints to stdout
+
+	_ = w.Close()           // close the write pipe
+	os.Stdout = oldOut      // reset os.Stdout to its original value
+	out, _ := io.ReadAll(r) // read the output from the read pipe
+
+	// perform the test
+	if string(out) != "-> " {
+		t.Errorf("incorrect prompt: expected '->', but got %s", string(out))
+	}
+}
 
 func Test_isPrime(t *testing.T) {
 	primeTests := []struct {
