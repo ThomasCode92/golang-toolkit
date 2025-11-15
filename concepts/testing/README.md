@@ -60,8 +60,13 @@ Each subfolder is a Go project. To run the example applications, you can use the
 following commands:
 
 ```bash
-# primeapp is an example, replace it with any other subfolder
-cd primeapp && go run .        # run the application
-cd primeapp && go run -race .  # run, and check for race conditions
-cd primeapp && go test -race . # run the tests, and check for race conditions
+## running the application
+docker compose up -d      # start any required services (e.g. databases)
+go run ./...              # run the application
+
+## test related commands
+go test ./...                             # run all tests
+go test -cover ./...                      # run all tests with coverage report
+go test -coverprofile=coverage.out ./...  # generate coverage profile
+go tool cover -html=coverage.out          # view coverage report in browser
 ```
