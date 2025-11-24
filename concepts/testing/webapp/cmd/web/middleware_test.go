@@ -1,12 +1,25 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
 var app application
+
+func Test_application_ipFromContext(t *testing.T) {
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, contextUserKey, "whatevermyipis")
+
+	ip := app.ipFromContext(ctx)
+
+	if !strings.EqualFold("whatevermyipis", ip) {
+		t.Errorf("wrong value returned from context, expected %s but got %s", "whatevermyipis", ip)
+	}
+}
 
 func Test_application_addIPToContext(t *testing.T) {
 	tests := []struct {
