@@ -36,17 +36,38 @@
             v-model="message"
           />
         </div>
+        <div class="row">
+          <div class="col">
+            <h1>{{counter}}</h1>
+            <hr />
+            <button class="btn btn-outline-secondary" v-on:click="increment">
+              Increment
+            </button>
+            <button class="btn btn-outline-secondary" v-on:click="decrement">
+              Decrement
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
     <script>
       let data = {
         message: "Hello, Vue!",
+        counter: 0,
       };
 
       const vm = Vue.createApp({
         data() {
           return data;
+        },
+        methods: {
+          increment() {
+            this.counter++;
+          },
+          decrement() {
+            this.counter--;
+          },
         },
       }).mount("#app");
     </script>
