@@ -48,6 +48,11 @@
             </button>
           </div>
         </div>
+        <div class="row">
+          <div class="col">
+            <my-component></my-component>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -55,6 +60,13 @@
       let data = {
         message: "Hello, Vue!",
         counter: 0,
+      };
+
+      const MyComponent = {
+        props: [],
+        template: `
+          <h1>My Component</h1>
+        `,
       };
 
       const vm = Vue.createApp({
@@ -68,6 +80,9 @@
           decrement() {
             this.counter--;
           },
+        },
+        components: {
+          MyComponent,
         },
       }).mount("#app");
     </script>
