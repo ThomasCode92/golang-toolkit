@@ -48,6 +48,23 @@
             </button>
           </div>
         </div>
+        <div class="row mt-5">
+          <div class="col">
+            <from class="needs-validation" novalidate>
+              <text-input
+                label="First Name"
+                type="text"
+                name="first-name"
+              ></text-input>
+              <text-input
+                label="Last Name"
+                type="text"
+                name="last-name"
+              ></text-input>
+              <text-input label="Email" type="email" name="email"></text-input>
+            </from>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -98,7 +115,7 @@
           },
         },
         components: {
-          MyComponent,
+          TextInput,
         },
       }).mount("#app");
     </script>
