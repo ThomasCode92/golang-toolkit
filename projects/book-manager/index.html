@@ -48,11 +48,6 @@
             </button>
           </div>
         </div>
-        <div class="row">
-          <div class="col">
-            <my-component></my-component>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -62,10 +57,31 @@
         counter: 0,
       };
 
-      const MyComponent = {
-        props: [],
+      const TextInput = {
+        props: {
+          name: String,
+          type: String,
+          label: String,
+          placeholder: String,
+          required: String,
+          min: String,
+          max: String,
+          value: String,
+        },
         template: `
-          <h1>My Component</h1>
+          <div class="mb-3">
+            <label :for="name" class="form-label">{{ label }}</label>
+            <input
+              :id="name"
+              :type="type"
+              class="form-control"
+              :placeholder="placeholder"
+              :value="value"
+              :required="required"
+              :min="min"
+              :max="max"
+            />
+          </div>
         `,
       };
 
