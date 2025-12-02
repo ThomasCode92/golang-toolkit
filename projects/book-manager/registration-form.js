@@ -9,6 +9,7 @@ const RegistrationForm = {
       <text-input label="Email" type="email" name="email" required></text-input>
       <text-input label="Password" type="password" name="password" required></text-input>
       <select-input label="Favorite Color" name="favorite-color" :items="items" required ></select-input>
+      <checkbox-input label="I agree to the Terms and Conditions" required></checkbox-input>
       <hr />
       <input type="submit" class="btn btn-outline-primary" value="Register"/>
     </form>
@@ -40,5 +41,6 @@ const RegistrationForm = {
   components: {
     "text-input": TextInput,
     "select-input": SelectInput,
+    "checkbox-input": CheckboxInput,
   },
 };

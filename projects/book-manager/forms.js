@@ -15,6 +15,7 @@ const TextInput = {
       <input
         :id="name"
         :type="type"
+        :name="name"
         class="form-control"
         :placeholder="placeholder"
         :autocomplete="name + '-new'"
@@ -37,6 +38,23 @@ const SelectInput = {
           {{ item.text }}
         </option>
       </select>
+    </div>
+  `,
+};
+
+const CheckboxInput = {
+  props: ["name", "label", "required", "value"],
+  template: `
+    <div class="form-check mb-3">
+      <input
+        :id="name"
+        type="checkbox"
+        :name="name"
+        class="form-check-input"
+        :value="value"
+        :required="required"
+      />
+      <label :for="name" class="form-check-label">{{ label }}</label>
     </div>
   `,
 };
