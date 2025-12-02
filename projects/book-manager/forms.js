@@ -26,3 +26,17 @@ const TextInput = {
     </div>
   `,
 };
+
+const SelectInput = {
+  props: ["items", "name", "label", "required"],
+  template: `
+    <div class="mb-3">
+      <label :for="name" class="form-label">{{label}}</label>
+      <select :id="name" class="form-select" :name="name" :required="required">
+        <option v-for="item in items" :key="item.id" :value="item.value">
+          {{ item.text }}
+        </option>
+      </select>
+    </div>
+  `,
+};
