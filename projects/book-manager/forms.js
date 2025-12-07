@@ -43,7 +43,7 @@ const SelectInput = {
 };
 
 const CheckboxInput = {
-  props: ["name", "label", "required", "value"],
+  props: ["name", "label", "required", "value", "checked"],
   template: `
     <div class="form-check mb-3">
       <input
@@ -52,6 +52,7 @@ const CheckboxInput = {
         :name="name"
         class="form-check-input"
         :value="value"
+        :checked="checked"
         :required="required"
       />
       <label :for="name" class="form-check-label">{{ label }}</label>
