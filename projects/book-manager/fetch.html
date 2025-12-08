@@ -25,10 +25,31 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <div id="app"></div>
+          <div id="app">
+            <ul>
+              <book-item
+                v-for="item in books.results"
+                v-bind:book="item"
+                v-bind:key="item.id"
+                v-bind:id="item.id"
+              ></book-item>
+            </ul>
+          </div>
         </div>
       </div>
       <script>
+        const BookItem = {
+          props: ["book"],
+          template: `
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">{{ book.title}}</div>
+                  {{book.authors[0].name}}
+              </div>
+            </li>
+            `,
+        };
+
         const data = {
           books: { results: [] },
         };
@@ -36,6 +57,9 @@
         const vm = Vue.createApp({
           data() {
             return data;
+          },
+          components: {
+            BookItem,
           },
           mounted() {
             fetch("https://gutendex.com/books")
