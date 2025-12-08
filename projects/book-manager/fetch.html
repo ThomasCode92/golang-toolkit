@@ -1,0 +1,52 @@
+!<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registration Form</title>
+
+    <!-- Bootstrap CSS and JS-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Vue.js from CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div id="app"></div>
+        </div>
+      </div>
+      <script>
+        const data = {
+          books: { results: [] },
+        };
+
+        const vm = Vue.createApp({
+          data() {
+            return data;
+          },
+          mounted() {
+            fetch("https://gutendex.com/books")
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                this.books = data;
+              });
+          },
+        }).mount("#app");
+      </script>
+    </div>
+  </body>
+</html>
