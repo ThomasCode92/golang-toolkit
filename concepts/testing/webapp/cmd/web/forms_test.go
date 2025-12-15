@@ -7,6 +7,21 @@ import (
 	"testing"
 )
 
+func TestForm_ErrorsGet(t *testing.T) {
+	form := NewForm(nil)
+	form.Check(false, "password", "password is required")
+	s := form.Errors.Get("password")
+
+	if len(s) == 0 {
+		t.Error("should have an error return from Get() but did not")
+	}
+
+	s = form.Errors.Get("whatever")
+	if len(s) != 0 {
+		t.Error("should not have an error return from Get() but did")
+	}
+}
+
 func TestForm_Has(t *testing.T) {
 	form := NewForm(nil)
 
@@ -47,5 +62,14 @@ func TestForm_Required(t *testing.T) {
 	form.Required("a", "b", "c")
 	if !form.Valid() {
 		t.Error("shows post does not have required fields, when it does")
+	}
+}
+
+func TestForm_Check(t *testing.T) {
+	form := NewForm(nil)
+
+	form.Check(false, "password", "password is required")
+	if form.Valid() {
+		t.Error("Valid() returned false, and it should be true when calling Check()")
 	}
 }
