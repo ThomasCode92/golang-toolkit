@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-
+import AppForm from './forms/AppForm.vue'
 import TextInput from './forms/TextInput.vue'
-import { validateForms } from '@/utils/validation'
-
-onMounted(() => {
-  validateForms()
-})
 </script>
 
 <template>
@@ -15,7 +9,7 @@ onMounted(() => {
       <div class="col">
         <h1 class="mt-5">Login</h1>
         <hr />
-        <form method="POST" action="/login" class="needs-validation" novalidate>
+        <AppForm method="POST" action="/login">
           <text-input
             label="Email"
             type="email"
@@ -32,7 +26,7 @@ onMounted(() => {
           />
           <hr />
           <input type="submit" class="btn btn-primary" value="Login" />
-        </form>
+        </AppForm>
       </div>
     </div>
   </div>
