@@ -1,6 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import AppForm from './forms/AppForm.vue'
 import TextInput from './forms/TextInput.vue'
+
+const email = ref('')
+const password = ref('')
+
+const handleSubmit = () => {
+  console.log('Form submitted')
+}
 </script>
 
 <template>
@@ -9,8 +18,9 @@ import TextInput from './forms/TextInput.vue'
       <div class="col">
         <h1 class="mt-5">Login</h1>
         <hr />
-        <AppForm method="POST" action="/login">
+        <AppForm method="POST" action="/login" @onsubmit="handleSubmit">
           <text-input
+            v-model="email"
             label="Email"
             type="email"
             name="email"
@@ -18,6 +28,7 @@ import TextInput from './forms/TextInput.vue'
             required
           />
           <text-input
+            v-model="password"
             label="Password"
             type="password"
             name="password"
