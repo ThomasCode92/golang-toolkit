@@ -7,8 +7,13 @@ import TextInput from './forms/TextInput.vue'
 const email = ref('')
 const password = ref('')
 
-const handleSubmit = () => {
-  console.log('Form submitted')
+const handleSubmit = (formData: FormData) => {
+  console.log('Form submitted successfully')
+  console.log('Email:', formData.get('email'))
+  console.log('Password:', formData.get('password'))
+
+  // TODO: Implement actual login logic here
+  // Example: await loginUser(formData.get('email'), formData.get('password'))
 }
 </script>
 
@@ -18,7 +23,7 @@ const handleSubmit = () => {
       <div class="col">
         <h1 class="mt-5">Login</h1>
         <hr />
-        <AppForm method="POST" action="/login" @onsubmit="handleSubmit">
+        <AppForm method="POST" action="/login" @onSubmit="handleSubmit">
           <text-input
             v-model="email"
             label="Email"
