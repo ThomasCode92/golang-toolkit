@@ -16,7 +16,6 @@ func Test_application_Handlers(t *testing.T) {
 		{"not found", "/something", http.StatusNotFound},
 	}
 
-	var app application
 	routes := app.routes()
 
 	// create a test server

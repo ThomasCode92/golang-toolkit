@@ -17,7 +17,6 @@ func Test_application_Home(t *testing.T) {
 		{route: "/static/*", method: "GET"},
 	}
 
-	var app application
 	mux := app.routes()
 	chiRouter := mux.(chi.Routes) // cast to chi.Routes to access the routes
 

@@ -8,8 +8,6 @@ import (
 	"testing"
 )
 
-var app application
-
 func Test_application_ipFromContext(t *testing.T) {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, contextUserKey, "whatevermyipis")
