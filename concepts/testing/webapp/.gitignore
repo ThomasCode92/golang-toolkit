@@ -1,2 +1,5 @@
 # Database Volume
 ./postgres-data
+
+# Temporary files
+**/tmp

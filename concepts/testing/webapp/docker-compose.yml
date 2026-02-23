@@ -1,4 +1,11 @@
 services:
+  webapp:
+    image: cosmtrek/air
+    working_dir: /app # working_dir value has to be the same of mapped volume
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
   postgres:
     image: "postgres:14.5"
     environment:

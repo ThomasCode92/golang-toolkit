@@ -20,7 +20,7 @@ func main() {
 	// set up an app config
 	app := application{}
 
-	dsn := "host=localhost port=5432 user=postgres password=postgres dbname=users sslmode=disable timezone=UTC connect_timeout=5"
+	dsn := "host=postgres port=5432 user=postgres password=postgres dbname=users sslmode=disable timezone=UTC connect_timeout=5"
 	flag.StringVar(&app.DSN, "dsn", dsn, "PostgreSQL connection")
 	flag.Parse()
 
