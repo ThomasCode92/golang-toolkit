@@ -13,8 +13,10 @@ func Test_application_Routes(t *testing.T) {
 		route  string
 		method string
 	}{
-		{route: "/", method: "GET"},
-		{route: "/static/*", method: "GET"},
+		{"/", "GET"},
+		{"/login", "POST"},
+		{"/user/profile", "GET"},
+		{"/static/*", "GET"},
 	}
 
 	mux := app.routes()
