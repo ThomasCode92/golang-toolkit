@@ -61,25 +61,57 @@ func TestMain(m *testing.M) {
 	}
 
 	// start the container, wait until ready
-	if err := pool.Retry(func() error {
-		var err error
-		testDB, err = sql.Open("pgx", fmt.Sprintf(dsn, host, port, user, password, dbname))
-		if err != nil {
-			log.Println("Error:", err)
-			return err
-		}
-		return testDB.Ping()
-	}); err != nil {
+	if err := pool.Retry(connect); err != nil {
 		_ = pool.Purge(resource)
 		log.Fatalf("could not connect to database: %s", err)
 	}
 
 	// populate the database with empty tables
+	err = createTables()
+	if err != nil {
+		log.Fatalf("error creating tables: %s", err)
+	}
 
 	// run tests
 	code := m.Run()
 
 	// clean up
+	if err := pool.Purge(resource); err != nil {
+		log.Fatalf("could not purge resource: %s", err)
+	}
 
 	os.Exit(code)
+}
+
+func connect() error {
+	var err error
+	testDB, err = sql.Open("pgx", fmt.Sprintf(dsn, host, port, user, password, dbname))
+	if err != nil {
+		log.Println("Error:", err)
+		return err
+	}
+	return testDB.Ping()
+}
+
+func createTables() error {
+	tableSQL, err := os.ReadFile("./testdata/users.sql")
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	_, err = testDB.Exec(string(tableSQL))
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
+}
+
+func Test_pingDB(t *testing.T) {
+	err := testDB.Ping()
+	if err != nil {
+		t.Error("could not ping database")
+	}
 }
