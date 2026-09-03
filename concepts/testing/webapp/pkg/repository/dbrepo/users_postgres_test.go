@@ -143,3 +143,34 @@ func TestPostgresDBRepo_InsertUser(t *testing.T) {
 		t.Errorf("insert user returned wrong id; expected 1, got %d", id)
 	}
 }
+
+func TestPostgresDBRepo_AllUsers(t *testing.T) {
+	users, err := testRepo.AllUsers()
+	if err != nil {
+		t.Errorf("all users returned an error: %s", err)
+	}
+
+	if len(users) != 1 {
+		t.Errorf("all users returned wrong number of users; expected 1, got %d", len(users))
+	}
+
+	testUser := data.User{
+		Username:  "Jack",
+		Email:     "jack@example.com",
+		IsAdmin:   false,
+		Password:  "secret",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	testRepo.InsertUser(testUser)
+
+	users, err = testRepo.AllUsers()
+	if err != nil {
+		t.Errorf("all users returned an error: %s", err)
+	}
+
+	if len(users) != 2 {
+		t.Errorf("all users returned wrong number of users after insert; expected 2, got %d", len(users))
+	}
+}
