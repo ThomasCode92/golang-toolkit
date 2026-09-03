@@ -217,3 +217,15 @@ func TestPostgresDBRepo_UpdateUser(t *testing.T) {
 		t.Errorf("update user did not correctly update the user; got %+v", updatedUser)
 	}
 }
+
+func TestPostgresDBRepo_DeleteUser(t *testing.T) {
+	err := testRepo.DeleteUser(2)
+	if err != nil {
+		t.Errorf("delete user returned an error: %s", err)
+	}
+
+	_, err = testRepo.GetUser(2)
+	if err == nil {
+		t.Error("no error returned when getting deleted user")
+	}
+}
