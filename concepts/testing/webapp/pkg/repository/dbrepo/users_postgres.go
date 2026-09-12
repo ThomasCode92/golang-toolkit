@@ -176,13 +176,19 @@ func (m *PostgresDBRepo) InsertUser(user data.User) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
+	stmt := `delete from user_images where user_id = $1`
+	_, err := m.DB.ExecContext(ctx, stmt, user.ID)
+	if err != nil {
+		return 0, err
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
 	if err != nil {
 		return 0, err
 	}
 
 	var newID int
-	stmt := `insert into users (email, username, password, is_admin, created_at, updated_at)
+	stmt = `insert into users (email, username, password, is_admin, created_at, updated_at)
 		values ($1, $2, $3, $4, $5, $6) returning id`
 
 	err = m.DB.QueryRowContext(ctx, stmt,
