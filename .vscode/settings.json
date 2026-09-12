@@ -1,0 +1,42 @@
+{
+  // Editor Settings
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+
+  "files.associations": {
+    "*.gohtml": "html"
+  },
+
+  // Language Server Settings
+  "gopls": {
+    "build.buildFlags": ["-tags=integration"]
+  },
+
+  // Language Specific Settings
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "[sql]": {
+    "editor.defaultFormatter": "mtxr.sqltools"
+  },
+
+  // SQLTools Settings
+  "sqltools.autoOpenSessionFiles": false,
+  "sqltools.format": {
+    "linesBetweenQueries": 2,
+    "reservedWordCase": "upper"
+  },
+
+  // CSpell Settings
+  "cSpell.customDictionaries": {
+    "custom-dictionary-workspace": {
+      "name": "custom-dictionary-workspace",
+      "path": "${workspaceFolder}/.cspell/custom-dictionary.txt",
+      "addWords": true,
+      "scope": "workspace"
+    }
+  }
+}
