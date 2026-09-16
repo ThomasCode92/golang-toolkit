@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"crypto/tls"
 	"fmt"
@@ -16,6 +17,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"webapp/pkg/data"
 )
 
 func Test_application_Handlers(t *testing.T) {
@@ -221,6 +223,47 @@ func Test_application_UploadFiles(t *testing.T) {
 	_ = os.Remove(fmt.Sprintf("./testdata/uploads/%s", uploadedFiles[0].OriginalFileName))
 
 	wg.Wait()
+}
+
+func Test_application_UploadProfilePicture(t *testing.T) {
+	uploadPath = "./testdata/uploads/"
+	filePath := "./testdata/images/red_square.png"
+
+	fieldName := "file"
+	body := new(bytes.Buffer)
+
+	mw := multipart.NewWriter(body)
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w, err := mw.CreateFormFile(fieldName, filePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := io.Copy(w, file); err != nil {
+		t.Fatal(err)
+	}
+
+	mw.Close()
+
+	req := httptest.NewRequest(http.MethodPost, "/upload", body)
+	req = addContextAndSession(req, app)
+	app.Session.Put(req.Context(), "user", data.User{ID: 1})
+	req.Header.Set("Content-Type", mw.FormDataContentType())
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(app.UploadProfilePicture)
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusSeeOther {
+		t.Errorf("wrong status code; expected %d, but got %d", http.StatusSeeOther, rr.Code)
+	}
+
+	_ = os.Remove(uploadPath + "red_square.png")
 }
 
 func getCtx(req *http.Request) context.Context {

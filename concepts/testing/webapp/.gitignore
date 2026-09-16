@@ -5,5 +5,4 @@
 **/tmp
 
 # Images
-**/static/img/*
-!**/static/img/.gitkeep
+**/static/img/
