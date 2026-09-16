@@ -3,3 +3,7 @@
 
 # Temporary files
 **/tmp
+
+# Images
+**/static/img/*
+!**/static/img/.gitkeep
