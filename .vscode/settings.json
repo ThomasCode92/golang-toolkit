@@ -10,6 +10,12 @@
     "*.gohtml": "html"
   },
 
+  // Inlay Hints
+  "go.inlayHints.assignVariableTypes": true,
+  "go.inlayHints.functionTypeParameters": true,
+  "go.inlayHints.parameterNames": true,
+  "editor.inlayHints.enabled": "offUnlessPressed",
+
   // Language Server Settings
   "gopls": {
     "build.buildFlags": ["-tags=integration"]
@@ -29,6 +35,17 @@
     "linesBetweenQueries": 2,
     "reservedWordCase": "upper"
   },
+  "sqltools.connections": [
+    {
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "webapp",
+      "database": "users",
+      "username": "postgres",
+      "password": "postgres"
+    }
+  ],
 
   // CSpell Settings
   "cSpell.customDictionaries": {
