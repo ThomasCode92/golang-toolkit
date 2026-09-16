@@ -3,11 +3,18 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"fmt"
+	"image"
+	"image/png"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
+	"path"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -187,6 +194,35 @@ func Test_application_Login(t *testing.T) {
 	}
 }
 
+func Test_application_UploadFiles(t *testing.T) {
+	pr, pw := io.Pipe()
+
+	writer := multipart.NewWriter(pw)
+
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+
+	// simulate uploading a file, using a goroutine
+	go simulatePNGUpload("./testdata/images/red_square.png", writer, t, wg)
+
+	request := httptest.NewRequest("POST", "/", pr)
+	request.Header.Add("Content-Type", writer.FormDataContentType())
+
+	uploadedFiles, err := app.UploadFiles(request, "./testdata/uploads/")
+	if err != nil {
+		t.Error(err)
+	}
+
+	// perform tests
+	if _, err := os.Stat(fmt.Sprintf("./testdata/uploads/%s", uploadedFiles[0].OriginalFileName)); os.IsNotExist(err) {
+		t.Errorf("expected file to exists: %s", err.Error())
+	}
+
+	_ = os.Remove(fmt.Sprintf("./testdata/uploads/%s", uploadedFiles[0].OriginalFileName))
+
+	wg.Wait()
+}
+
 func getCtx(req *http.Request) context.Context {
 	ctx := context.WithValue(req.Context(), contextUserKey, "unknown")
 	return ctx
@@ -198,4 +234,34 @@ func addContextAndSession(req *http.Request, app application) *http.Request {
 	ctx, _ := app.Session.Load(req.Context(), req.Header.Get("X-Session"))
 
 	return req.WithContext(ctx)
+}
+
+func simulatePNGUpload(fileToUpload string, writer *multipart.Writer, t *testing.T, wg *sync.WaitGroup) {
+	defer writer.Close()
+	defer wg.Done()
+
+	// create the form data, file field
+	part, err := writer.CreateFormFile("file", path.Base(fileToUpload))
+	if err != nil {
+		t.Error(err)
+	}
+
+	// open the file
+	f, err := os.Open(fileToUpload)
+	if err != nil {
+		t.Error(err)
+	}
+	defer f.Close()
+
+	// decode the image
+	img, _, err := image.Decode(f)
+	if err != nil {
+		t.Error("error decoding image: ", err)
+	}
+
+	// write the png to writer
+	err = png.Encode(part, img)
+	if err != nil {
+		t.Error(err)
+	}
 }
