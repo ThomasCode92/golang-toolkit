@@ -9,13 +9,14 @@ import (
 
 // User describes the data for the User type.
 type User struct {
-	ID        int       `json:"id"`
-	Username  string    `json:"username"`
-	Email     string    `json:"email"`
-	Password  string    `json:"-"`
-	IsAdmin   bool      `json:"is_admin"`
-	CreatedAt time.Time `json:"-"`
-	UpdatedAt time.Time `json:"-"`
+	ID             int       `json:"id"`
+	Username       string    `json:"username"`
+	Email          string    `json:"email"`
+	Password       string    `json:"-"`
+	IsAdmin        bool      `json:"is_admin"`
+	ProfilePicture UserImage `json:"-"`
+	CreatedAt      time.Time `json:"-"`
+	UpdatedAt      time.Time `json:"-"`
 }
 
 // PasswordMatches uses Go's bcrypt package to compare a user supplied password
