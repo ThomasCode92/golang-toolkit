@@ -1,3 +1,4 @@
 [build]
-  cmd = "go build -o /tmp/main ./cmd/web"
-  bin = "/tmp/main"
+  cmd = "go build -o ./tmp/api ./cmd/api && go build -o ./tmp/web ./cmd/web"
+  full_bin = "./tmp/api & ./tmp/web & wait"
+  exclude_dir = ["tmp", "static"]

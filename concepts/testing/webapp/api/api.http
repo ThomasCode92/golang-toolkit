@@ -1,0 +1,3 @@
+### Test Endpoint
+
+GET http://localhost:8090/test

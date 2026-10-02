@@ -4,6 +4,7 @@ services:
     working_dir: /app # working_dir value has to be the same of mapped volume
     ports:
       - 8080:8080
+      - 8090:8090
     depends_on:
       postgres:
         condition: service_healthy
