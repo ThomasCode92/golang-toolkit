@@ -1,3 +1,13 @@
 ### Test Endpoint
 
 GET http://localhost:8090/test
+
+### Authenticate
+
+POST http://localhost:8090/auth
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "secret"
+}

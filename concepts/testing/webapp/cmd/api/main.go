@@ -23,10 +23,9 @@ func main() {
 
 	dsn := "host=postgres port=5432 user=postgres password=postgres dbname=users sslmode=disable timezone=UTC connect_timeout=5"
 
-	flag.StringVar(&app.DSN, "domain", "example.com", " Domain for application, e.g. company.com")
+	flag.StringVar(&app.Domain, "domain", "example.com", " Domain for application, e.g. company.com")
 	flag.StringVar(&app.DSN, "dsn", dsn, "PostgreSQL connection")
 	flag.StringVar(&app.JWTSecret, "jwt_secret", "38633955495528413063497172481314302516105319478423", "Signing secret")
-
 	flag.Parse()
 
 	conn, err := app.connectToDB()
