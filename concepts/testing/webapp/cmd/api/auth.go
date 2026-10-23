@@ -86,7 +86,7 @@ func (app *application) generateTokenPair(user *data.User) (TokenPair, error) {
 	// set claims
 	claims := token.Claims.(jwt.MapClaims)
 	claims["name"] = user.Username
-	claims["sub"] = user.ID
+	claims["sub"] = fmt.Sprint(user.ID)
 	claims["aud"] = app.Domain
 	claims["iss"] = app.Domain
 	if user.IsAdmin {
@@ -107,7 +107,7 @@ func (app *application) generateTokenPair(user *data.User) (TokenPair, error) {
 	// create the refresh token
 	refreshToken := jwt.New(jwt.SigningMethodHS256)
 	refreshTokenClaims := refreshToken.Claims.(jwt.MapClaims)
-	refreshTokenClaims["sub"] = user.ID
+	refreshTokenClaims["sub"] = fmt.Sprint(user.ID)
 
 	// set expiry; must be longer than jwt expiry
 	refreshTokenClaims["exp"] = time.Now().Add(refreshTokenExpiry).Unix()
