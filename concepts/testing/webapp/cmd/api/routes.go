@@ -19,15 +19,15 @@ func (app *application) routes() http.Handler {
 	mux.Post("/refresh-token", app.refresh)
 
 	// protected routes
-	mux.Route("/users", func(r chi.Router) {
+	mux.Route("/users", func(mux chi.Router) {
 		// use auth middleware
 		mux.Use(app.authRequired)
 
 		mux.Get("/", app.allUsers)
-		mux.Get("/{userId}", app.getUser)
-		mux.Delete("/{userId}", app.deleteUser)
+		mux.Get("/{userID}", app.getUser)
+		mux.Delete("/{userID}", app.deleteUser)
 		mux.Put("/", app.insertUser)
-		mux.Patch("/{userId}", app.updateUser)
+		mux.Patch("/{userID}", app.updateUser)
 	})
 
 	return mux
