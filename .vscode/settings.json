@@ -2,6 +2,7 @@
   // Editor Settings
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "editor.inlayHints.enabled": "offUnlessPressed",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
@@ -10,11 +11,11 @@
     "*.gohtml": "html"
   },
 
-  // Inlay Hints
+  // Golang Settings
+  "go.buildTags": "integration",
   "go.inlayHints.assignVariableTypes": true,
   "go.inlayHints.functionTypeParameters": true,
   "go.inlayHints.parameterNames": true,
-  "editor.inlayHints.enabled": "offUnlessPressed",
 
   // Language Server Settings
   "gopls": {

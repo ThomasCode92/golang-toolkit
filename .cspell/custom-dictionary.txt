@@ -1,9 +1,0 @@
-dbname
-dbrepo
-dockertest
-healthcheck
-jackc
-pgconn
-sslmode
-stdlib
-udemy
