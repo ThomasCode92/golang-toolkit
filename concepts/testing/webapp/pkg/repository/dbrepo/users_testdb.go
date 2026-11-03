@@ -22,8 +22,14 @@ func (m *TestDBRepo) AllUsers() ([]*data.User, error) {
 
 // GetUser returns one user by id
 func (m *TestDBRepo) GetUser(id int) (*data.User, error) {
+	if id != 1 {
+		return nil, errors.New("user not found")
+	}
+
 	user := data.User{
-		ID: 1,
+		ID:       1,
+		Username: "Admin",
+		Email:    "admin@example.com",
 	}
 
 	return &user, nil
