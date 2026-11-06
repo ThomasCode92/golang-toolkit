@@ -122,7 +122,7 @@ func (app *application) allUsers(w http.ResponseWriter, r *http.Request) {
 func (app *application) getUser(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(chi.URLParam(r, "userID"))
 	if err != nil {
-		app.errorJSON(w, err, http.StatusInternalServerError)
+		app.errorJSON(w, err, http.StatusBadRequest)
 		return
 	}
 
@@ -172,7 +172,7 @@ func (app *application) updateUser(w http.ResponseWriter, r *http.Request) {
 func (app *application) deleteUser(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(chi.URLParam(r, "userID"))
 	if err != nil {
-		app.errorJSON(w, err, http.StatusInternalServerError)
+		app.errorJSON(w, err, http.StatusBadRequest)
 		return
 	}
 

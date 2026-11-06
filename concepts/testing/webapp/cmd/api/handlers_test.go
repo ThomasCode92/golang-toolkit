@@ -102,8 +102,40 @@ func Test_app_userHandlers(t *testing.T) {
 	}{
 		{"allUsers", "GET", "", "", app.allUsers, http.StatusOK},
 		{"deleteUser", "DELETE", "", "1", app.deleteUser, http.StatusNoContent},
+		{"deleteUser - invalid param", "DELETE", "", "Y", app.deleteUser, http.StatusBadRequest},
 		{"getUser - valid id", "GET", "", "1", app.getUser, http.StatusOK},
+		{"getUser - invalid id param", "GET", "", "Y", app.getUser, http.StatusBadRequest},
 		{"getUser - invalid id", "GET", "", "100", app.getUser, http.StatusNotFound},
+		{
+			"updateUser - valid id", "PATCH",
+			`{"id": 1, "username": "Admin", "email": "admin@example.com"}`,
+			"", app.updateUser, http.StatusNoContent,
+		},
+		{
+			"updateUser - invalid id", "PATCH",
+			`{"id": 100, "username": "Admin", "email": "admin@example.com"}`,
+			"", app.updateUser, http.StatusInternalServerError,
+		},
+		{
+			"updateUser - invalid json", "PATCH",
+			`{"id": 1, username: "Admin", "email": "admin@example.com"}`,
+			"", app.updateUser, http.StatusBadRequest,
+		},
+		{
+			"insertUser - valid", "PUT",
+			`{"username": "Admin", "email": "admin@example.com"}`,
+			"", app.insertUser, http.StatusCreated,
+		},
+		{
+			"insertUser - invalid body", "PUT",
+			`{"username": "Admin", "email": "admin@example.com", "foo": "bar"}`,
+			"", app.insertUser, http.StatusBadRequest,
+		},
+		{
+			"insertUser - invalid json", "PUT",
+			`{username: "Admin", "email": "admin@example.com" }`,
+			"", app.insertUser, http.StatusBadRequest,
+		},
 	}
 
 	for _, e := range theTests {
